@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jeprady!</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="pageHeader">
+    <h1>Jeprady!</h1>
+    <p class="tagline">Pick a tile, reveal the answer, change your score.</p>
+  </header>
+
+  <main>
+<!--Starting screen-->
+    <section class="startScreen" id="startScreen" aria-labelledby="startHeading">
+      <h2 id="startHeading">Ready to play?</h2>
+      <button class="primaryButton" id="newGameButton" type="button">New Game</button>
+
+<!--Highscore table-->
+      <section class="leaderboard" id="leaderboard" aria-labelledby="leaderboardHeading">
+        <h3 id="leaderboardHeading">High Scores</h3>
+        <ol class="leaderboardList" id="leaderboardList"></ol>
+        <p class="emptyState" id="leaderboardEmpty">No scores yet...</p>
+      </section>
+    </section>
+
+<!--Player config-->
+    <section class="setupScreen" id="setupScreen" aria-labelledby="setupHeading" hidden>
+      <h2 id="setupHeading">Who's playing?</h2>
+
+      <fieldset class="playerCountField">
+        <legend>Number of players</legend>
+        <div class="countButtons" id="countButtons" role="radiogroup" aria-label="Number of players">
+          <button class="countButton isSelected" type="button" data-count="1" aria-pressed="true">1</button>
+          <button class="countButton" type="button" data-count="2" aria-pressed="false">2</button>
+          <button class="countButton" type="button" data-count="3" aria-pressed="false">3</button>
+          <button class="countButton" type="button" data-count="4" aria-pressed="false">4</button>
+        </div>
+      </fieldset>
+
+      <div class="nameFields" id="nameFields"></div>
+
+      <button class="primaryButton" id="toBoardButton" type="button">Start Game</button>
+
+<!--Loading message-->
+      <div class="statusMessage" id="loadingMessage" role="status" aria-live="polite" hidden>
+        <span class="spinner" aria-hidden="true"></span>
+        <span id="loadingText">Loading questions…</span>
+      </div>
+
+<!--Error message-->
+      <div class="statusMessage statusError" id="errorMessage" role="alert" hidden>
+        <p id="errorText"></p>
+        <button class="secondaryButton" id="retryButton" type="button">Try Again</button>
+      </div>
+    </section>
+
+<!--The board-->
+    <section class="gameScreen" id="gameScreen" aria-labelledby="gameHeading" hidden>
+      <h2 id="gameHeading" class="visuallyHidden">Game Board</h2>
+
+<!--Player turn & questions answered-->
+      <div class="scoreBar">
+        <p class="turnLabel" id="turnLabel" aria-live="polite">Player 1's turn</p>
+        <p class="progressLabel"><span id="answeredCount">0</span> of <span id="totalTiles">30</span> answered</p>
+      </div>
+
+<!--Scoreboard-->
+      <div class="scoreboard" id="scoreboard" aria-label="Player scores"></div>
+
+<!--Actual board-->
+      <div class="board" id="board" role="grid" aria-label="Jeprady board">
+      </div>
+    </section>
+  </main>
+
+<!--The clue things-->
+  <div class="modalOverlay" id="clueModal" role="dialog" aria-modal="true" aria-labelledby="clueCategory" hidden>
+    <div class="modalContent">
+<!--Who's turn-->
+      <p class="clueTurn" id="clueTurn"></p>
+<!--Daily double-->
+      <p class="dailyDoubleBanner" id="dailyDoubleBanner" hidden> Daily Double! </p>
+<!--Daily double 0$ message-->
+      <p class="noWagerNote" id="noWagerNote" hidden></p>
+<!--Clue and amount it's worth-->
+      <p class="clueMeta">
+        <span id="clueCategory"></span>  <span id="clueValue"></span>
+      </p>
+<!--Clue text-->
+      <p class="clueQuestion" id="clueQuestion"></p>
+
+<!--Daily double screen when over a 1$-->
+      <div class="wagerBox" id="wagerBox" hidden>
+        <p class="wagerPrompt">Daily Double! You can wager up to <span id="wagerMax"></span>.</p>
+        <label class="wagerLabel" for="wagerInput">Your wager:</label>
+        <input class="wagerInput" id="wagerInput" type="number" min="1" />
+        <p class="wagerError" id="wagerError" role="alert" hidden></p>
+        <button class="primaryButton" id="wagerButton" type="button">Lock in wager</button>
+      </div>
+
+<!--Answer choices-->
+      <ul class="clueOptions" id="clueOptions"></ul>
+
+<!--The answer-->
+      <div class="clueAnswer" id="clueAnswer" hidden>
+        <p class="answerLabel">Answer:</p>
+        <p id="clueAnswerText"></p>
+      </div>
+
+<!--Reveal answer button. Correct and inccorect buttons-->
+      <div class="modalActions">
+        <button class="primaryButton" id="revealButton" type="button">Reveal Answer</button>
+        <button class="correctButton" id="gotItButton" type="button" hidden>Got it right</button>
+        <button class="wrongButton" id="missedButton" type="button" hidden>Got it wrong</button>
+      </div>
+    </div>
+  </div>
+
+<!--Results when all tiles are selected-->
+  <div class="modalOverlay" id="resultsModal" role="dialog" aria-modal="true" aria-labelledby="resultsHeading" hidden>
+    <div class="modalContent">
+      <h2 id="resultsHeading">Game Over!</h2>
+      <p id="winnerText" class="winnerText"></p>
+      <ol class="resultsList" id="resultsList"></ol>
+      <div class="modalActions">
+        <button class="primaryButton" id="playAgainButton" type="button">Back to Start</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
